@@ -1,8 +1,8 @@
 #!/usr/bin/python
 
-wxpyblast_version = "010"
+wxpyblast_version = "011"
 
-import sys, datetime, getopt, re, threading, wx, time, os
+import sys, datetime, getopt, re, threading, wx, time, os, math
 from Bio import SeqIO
 from Bio.Blast import NCBIWWW, NCBIXML
 import wx.lib.agw.floatspin as FS
@@ -101,8 +101,8 @@ class MainWindow(wx.Frame):
 		self.min_identSpinCtrl = wx.SpinCtrl (panel, -1, min=0, max=100, initial=0, value='0')
 		max_resultsText = wx.StaticText(panel, -1, "Maximum Results")
 		self.max_resultsSpinCtrl = wx.SpinCtrl (panel, -1, min=1, max=50, initial=12, value='12')
-		max_eText = wx.StaticText(panel, -1, "Max E Value")
-		self.max_eSpinCtrl = FS.FloatSpin(panel, -1, min_val=0, max_val=1, increment=0.002, value=0.1, digits=3)
+		max_eText = wx.StaticText(panel, -1, "Max E Value (10^)")
+		self.max_eSpinCtrl = wx.SpinCtrl (panel, -1, min=-100, max=0, initial=-5, value='-5')
 			
 		mainBox.Add(min_optionsHeaderText,0,wx.ALIGN_CENTER_HORIZONTAL)
 		mainBox.Add(min_coverageText,0,wx.EXPAND)
@@ -216,7 +216,7 @@ class MainWindow(wx.Frame):
 		info.SetName("wxpyblast")
 		info.SetVersion(wxpyblast_version)
 		info.SetDescription("wxpyblast is a GUI frontend for automating BLAST searches via NCBI")
-		info.SetCopyright("(C) 2011 Adam Caldwell")
+		info.SetCopyright("(C) 2012 Adam Caldwell")
 		info.AddDeveloper("Adam Caldwell")
 		info.AddDeveloper("Thanks to: Biopython team")
 		info.AddDeveloper("Thanks to: wxPython team")
@@ -242,7 +242,7 @@ class MainWindow(wx.Frame):
 		min_coverage=self.min_coverageSpinCtrl.GetValue(),
 		 min_ident=self.min_identSpinCtrl.GetValue(),
 		  max_results=self.max_resultsSpinCtrl.GetValue(),
-		   max_e=self.max_eSpinCtrl.GetValue(),
+		   max_e=math.pow(10,self.max_eSpinCtrl.GetValue()),
 		    regexCheckbox=self.regexCheckbox.GetValue(),
 		    filter_title_regex=self.filter_title_regex
 		    )
