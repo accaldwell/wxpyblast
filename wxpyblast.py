@@ -11,7 +11,7 @@ def parseBlast(inputfile_handle,reportfile_handle,input_filename,tweakables):
 	try:
 		blast_records = list(NCBIXML.parse(inputfile_handle))
 		header_written = False
-		reportProgressWindow = wx.ProgressDialog("Parsing XML", "Report Generation Progress", len(blast_records),style=wx.PD_ELAPSED_TIME|wx.PD_REMAINING_TIME|wx.PD_AUTO_HIDE)
+		reportProgressWindow = wx.ProgressDialog("Parsing XML", "Report Generation Progress", len(blast_records),style=wx.PD_ELAPSED_TIME|wx.PD_REMAINING_TIME|wx.PD_AUTO_HIDE|wx.PD_APP_MODAL)
 		reportProgressWindow.Update(0)
 		remainingRecords = len(blast_records)	
 		for blast_record in blast_records:
@@ -303,9 +303,8 @@ class MainWindow(wx.Frame):
 					records = list(SeqIO.parse(self.fastafile, "fasta"))
 					self.fastafile.close()
 					self.statusbar.SetStatusText("BLASTing "+str(len(records))+" sequences")
-					blastProgressWindow = wx.ProgressDialog("BLASTing", "BLAST Progress", len(records),style=wx.PD_ELAPSED_TIME|wx.PD_REMAINING_TIME|wx.PD_AUTO_HIDE)
+					blastProgressWindow = wx.ProgressDialog("BLASTing", "BLAST Progress", len(records),style=wx.PD_ELAPSED_TIME|wx.PD_REMAINING_TIME|wx.PD_AUTO_HIDE|wx.PD_APP_MODAL)
 					remainingRecords = len(records)
-#					blastProgressWindow.Pulse()
 					initialPulse = False
 					for seq_record in records :		
 						blastEngine = blastThread(seq_record.format("fasta"), seq_record.id).start()
