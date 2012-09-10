@@ -1,13 +1,20 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
-wxpyblast_version = "011"
+"""wxpyblast.py: A graphical interface to BioPython's NCBI Blast interface"""
+
+__author__ = "Adam Caldwell"
+__copyright__ = "(C) 2012 Adam Caldwell"
+__license__ = "GPL"
+__version__ = "11"
+__maintainer__ = "Adam Caldwell"
+__email__ = "adam.caldwell@gmail.com"
 
 import sys, datetime, getopt, re, threading, wx, time, os, math
 from Bio import SeqIO
 from Bio.Blast import NCBIWWW, NCBIXML
-import wx.lib.agw.floatspin as FS
 
 def parseBlast(inputfile_handle,reportfile_handle,input_filename,tweakables):
+	"""Parse XML BLAST results stored locally, or those just received from NCBI"""
 	try:
 		blast_records = list(NCBIXML.parse(inputfile_handle))
 		header_written = False
@@ -214,14 +221,11 @@ class MainWindow(wx.Frame):
 	def OnAbout(self, event):
 		info = wx.AboutDialogInfo()
 		info.SetName("wxpyblast")
-		info.SetVersion(wxpyblast_version)
-		info.SetDescription("wxpyblast is a GUI frontend for automating BLAST searches via NCBI")
-		info.SetCopyright("(C) 2012 Adam Caldwell")
-		info.AddDeveloper("Adam Caldwell")
-		info.AddDeveloper("Thanks to: Biopython team")
-		info.AddDeveloper("Thanks to: wxPython team")
-		info.AddDeveloper("Thanks to: J. Dinis for a clever idea")
-		info.AddDocWriter("Adam Caldwell")
+		info.SetVersion(__version__)
+		info.SetDescription(__doc__)
+		info.SetCopyright(__copyright__)
+		info.AddDeveloper(__author__)
+		info.AddDocWriter(__author__)
 		wx.AboutBox(info)
 	
 	def OnQuit(self,event=None):
@@ -273,6 +277,7 @@ class MainWindow(wx.Frame):
 				self.statusbar.SetStatusText("Report Written")
 
 	def OnOpenFasta(self,e):
+		"""Handles opening a new FASTA format sequence file, querying NCBI BLAST servers, and parsing results"""
 		global xml_filename, xml_file, remainingRecords, errorlogfile, blastError
 		blastError = False
 		self.getTweakables()
