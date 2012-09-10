@@ -305,11 +305,15 @@ class MainWindow(wx.Frame):
 					self.statusbar.SetStatusText("BLASTing "+str(len(records))+" sequences")
 					blastProgressWindow = wx.ProgressDialog("BLASTing", "BLAST Progress", len(records),style=wx.PD_ELAPSED_TIME|wx.PD_REMAINING_TIME|wx.PD_AUTO_HIDE)
 					remainingRecords = len(records)
-					blastProgressWindow.Update(0)
+#					blastProgressWindow.Pulse()
+					initialPulse = False
 					for seq_record in records :		
 						blastEngine = blastThread(seq_record.format("fasta"), seq_record.id).start()
 					while (remainingRecords > 0):
-						blastProgressWindow.Update(len(records)-remainingRecords)
+						if len(records)-remainingRecords > 0:
+							blastProgressWindow.Update(len(records)-remainingRecords)
+						else:
+							blastProgressWindow.Pulse()	
 						if remainingRecords == 1:
 							self.statusbar.SetStatusText("BLASTing "+str(len(records))+" sequences, "+str(remainingRecords)+" sequence left")
 						else:
