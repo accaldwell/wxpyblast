@@ -112,10 +112,9 @@ class MainWindow(wx.Frame):
 		database_selectorText = wx.StaticText(panel, -1, "Database")
 		self.database_selector = wx.ComboBox(panel, id=-1, name="Database",choices=["nr","refseq_mrna","refseq_genomic"
 			,"est","est_human","est_mouse","est_others","gss","htgs","pat","pdb","month","alu_repeats","dbsts"
-			,"chromosome","wgs","env_nt"],style=wx.CB_READONLY)
+			,"chromosome","wgs","env_nt"], value='nr', style=wx.CB_READONLY)
 		program_selectorText = wx.StaticText(panel, -1, "Program")
-		self.program_selector = wx.ComboBox(panel, id=-1, name="Database",choices=["blastn","blastp","blastx","tblastn","tblastx","megablast"]
-			,style=wx.CB_READONLY)
+		self.program_selector = wx.ComboBox(panel, id=-1, name="Database",choices=["blastn","blastp","blastx","tblastn","tblastx","megablast"], value='blastn', style=wx.CB_READONLY)
 		seperatorLine = wx.StaticLine(panel,-1)
 		min_optionsHeaderText = wx.StaticText(panel, -1, "Report Options")
 		min_coverageText = wx.StaticText(panel, -1, "Minimum Query Coverage (%)")
